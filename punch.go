@@ -23,7 +23,6 @@ import (
 	"github.com/docopt/docopt-go"
 	"github.com/mitchellh/go-homedir"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/user"
 	"path"
@@ -33,8 +32,8 @@ import (
 // initialize will check the user's home directory for the presence of a `.punch` folder, creating it if not already present
 func initialize(punchPath string) {
 	if fileExists(punchPath) == false {
-		error := os.Mkdir(punchPath, 0755)
-		check(error)
+		err := os.Mkdir(punchPath, 0755)
+		check(err)
 	}
 }
 
@@ -44,10 +43,17 @@ func fileExists(path string) bool {
 	return err == nil && !os.IsExist(err)
 }
 
-// Gracefully exit the program if an error has occured
 func check(err error) {
+	checkWithMessage(err, err.Error(), true)
+}
+
+// Gracefully exit the program if an error has occured
+func checkWithMessage(err error, errorMessage string, exitOnError bool) {
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintf(os.Stderr, "%s\n", errorMessage)
+		if exitOnError {
+			os.Exit(1)
+		}
 	}
 }
 
@@ -111,7 +117,7 @@ func printPunchCard(punchPath string, punchCard string) {
 	punchCardPath := punchPath + "/" + punchCard + ".punch"
 
 	bytes, err := ioutil.ReadFile(punchCardPath)
-	check(err)
+	checkWithMessage(err, "The punch card \""+punchCard+"\" could not be found.", true)
 
 	text := string(bytes)
 
