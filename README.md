@@ -55,6 +55,22 @@ of Punch to other programs. For example, to find the list of all the times you p
 punch log test | grep "OUT" | awk '{print $3, $4, $5, $6, $8}' > times.txt
 ```
 
+## Ideas for Using Punch
+Punch was built to be integrated into a larger workflow. This approach allows Punch to fufill its function and 
+do nothing else. Some ideas for building on top of Punch are listed below:
+
+* Use git to merge multiple folks' punches on the same project and push to a central repository.
+* Build a web interface to display reports using data from Punch.
+* Build a web app on top of Punch for the less technically inclined.
+* Hook up Punch to a CRON job to punch in when you sign on and punch out when you leave
+
+## Roadmap
+I plan on working on Punch on the weekends, and have a few features in mind that I plan to implement:
+
+* Add a `punch log -j | --json-output` option to output JSON
+* Add a `punch log (-d | --display-last) <days> [<months>] [<years>]` option
+
+
 ## Licensing Information
 
 ```
